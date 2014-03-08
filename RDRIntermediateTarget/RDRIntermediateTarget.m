@@ -53,11 +53,16 @@
 {
     SEL selector = [anInvocation selector];
     
-    if ([self.target respondsToSelector:selector]) {
-        [anInvocation invokeWithTarget:self.target];
+    if (![self.target respondsToSelector:selector]) {
+        [super forwardInvocation:anInvocation];
     }
     else {
-        [super forwardInvocation:anInvocation];
+        if (!sel_isEqual(selector, _selector)) {
+            [super forwardInvocation:anInvocation];
+        }
+        else {
+            [anInvocation invokeWithTarget:self.target];
+        }
     }
 }
 
@@ -68,18 +73,24 @@
     }
     else {
         if ([self.target respondsToSelector:aSelector]) {
-            return YES;
+            if (sel_isEqual(aSelector, _selector)) {
+                return YES;
+            }
+            else {
+                return NO;
+            }
+        }
+        else {
+            return NO;
         }
     }
-    
-    return NO;
 }
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
 {    
     NSMethodSignature *signature = [super methodSignatureForSelector:aSelector];
     
-    if (!signature) {
+    if (!signature && sel_isEqual(aSelector, _selector)) {
         signature = [self.target methodSignatureForSelector:aSelector];
     }
     

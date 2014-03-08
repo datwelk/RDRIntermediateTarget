@@ -17,6 +17,14 @@
 
 @implementation AppDelegate
 
+#pragma mark - Public
+
+- (void)resetRootViewController
+{
+    _rootViewController = [ViewController new];
+    self.window.rootViewController = _rootViewController;
+}
+
 #pragma mark - UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -24,8 +32,7 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
-    _rootViewController = [ViewController new];
-    self.window.rootViewController = _rootViewController;
+    [self resetRootViewController];
     
     [self.window makeKeyAndVisible];
     
