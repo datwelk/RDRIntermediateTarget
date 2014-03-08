@@ -1,7 +1,7 @@
 RDRIntermediateTarget
 =====================
 
-A project that demonstrates the use of Objective-C's message passing capabilities to prevent retain cycles caused by NSTimer, NSThread or CADisplayLink instances.
+A project that demonstrates the use of Objective-C's message passing capabilities to prevent retain cycles caused by interaction with `NSTimer`, `NSThread` or `CADisplayLink` instances.
 
 # Introduction
 As you may already know, `NSTimer`, `NSThread`, and `CADisplayLink` instances retain their targets. If the target retains an instance of one of these classes as well, we have a retain cycle: neither the target nor the instance will ever be deallocated.
