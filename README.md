@@ -14,21 +14,19 @@ At this point you might wonder: why not keep a weak reference to the instance in
 It enables you to create `NSTimer`, `NSThread` and `CADisplayLink` objects without having to worry about retain cycles.
 
 # How does it work
-Internally a `RDRIntermediateTarget` object keeps a weak reference to the actual target (your `UIViewController` for example) and stores the selector that will have to be called on the actual target. It then forwards all invocations of this selector, originated by the `NSTimer`, `NSThread` or `CADisplayLink`, to the actual target.
+Internally a `RDRIntermediateTarget` object keeps a weak reference to the actual target (your `UIViewController` for example). It then forwards all invocations originated by the `NSTimer`, `NSThread` or `CADisplayLink` to the actual target.
 
 # How to use
 Note that the `RDRIntermediateTarget` is not retained! Check out the sample project to learn more.
 ```objectivec
-SEL selector = @selector(_timerFired:);
 RDRIntermediateTarget *target = 
-[RDRIntermediateTarget intermediateTargetWithTarget:self
-                                           selector:selector];
-
+[RDRIntermediateTarget intermediateTargetWithTarget:self];
 self.timer = [NSTimer timerWithTimeInterval:1.0f
                                      target:target
-                                   selector:selector
+                                   selector:@selector(_timerFired:)
                                    userInfo:nil
                                     repeats:YES];
+                                    
 [[NSRunLoop currentRunLoop] addTimer:timer
                              forMode:NSDefaultRunLoopMode];
 ```
