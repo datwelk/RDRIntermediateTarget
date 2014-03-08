@@ -14,7 +14,7 @@ At this point you might wonder: why not keep a weak reference to the instance in
 It enables you to create `NSTimer`, `NSThread` and `CADisplayLink` objects without having to worry about retain cycles.
 
 # How does it work
-Internally a `RDRIntermediateTarget` object keeps a weak reference to the actual target (your `UIViewController` for example). It then forwards all invocations originated by the `NSTimer`, `NSThread` or `CADisplayLink` to the actual target.
+Internally a `RDRIntermediateTarget` object keeps a weak reference to the actual target (your `UIViewController` for example). It forwards all invocations originated by the `NSTimer`, `NSThread` or `CADisplayLink` to the actual target.
 
 # How to use
 Note that the `RDRIntermediateTarget` is not retained! Check out the sample project to learn more.
