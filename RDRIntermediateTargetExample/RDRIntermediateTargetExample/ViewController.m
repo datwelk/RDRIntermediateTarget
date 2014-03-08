@@ -35,6 +35,7 @@ static BOOL kRDRPatchEnabled = YES;
 - (void)dealloc
 {
     NSLog(@"DEALLOC");
+    
     [_timer invalidate];
     _timer = nil;
 }
