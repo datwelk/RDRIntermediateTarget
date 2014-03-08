@@ -155,8 +155,7 @@ static BOOL kRDRPatchEnabled = YES;
     
     if (kRDRPatchEnabled) {
         target =
-        [RDRIntermediateTarget intermediateTargetWithTarget:self
-                                                   selector:selector];
+        [RDRIntermediateTarget intermediateTargetWithTarget:self];
     }
     else {
         target = self;

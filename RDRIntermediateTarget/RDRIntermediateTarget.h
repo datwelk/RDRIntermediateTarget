@@ -9,10 +9,7 @@
 
 @interface RDRIntermediateTarget : NSObject
 
-+ (instancetype)intermediateTargetWithTarget:(id)target
-                                    selector:(SEL)selector;
-
-- (instancetype)initWithTarget:(id)target
-                      selector:(SEL)selector;
++ (instancetype)intermediateTargetWithTarget:(id)target;
+- (instancetype)initWithTarget:(id)target;
 
 @end
