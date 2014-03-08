@@ -14,7 +14,7 @@ At this point you might wonder: why not keep a weak reference to the instance in
 It enables you to create `NSTimer`, `NSThread` and `CADisplayLink` objects without having to worry about retain cycles.
 
 # How does it work
-
+Internally a `RDRIntermediateTarget` object keeps a weak reference to the actual target (your `UIViewController` for example) and stores the selector that will have to be called on the actual target. It then forwards all invocations of this selector, originated by the `NSTimer`, `NSThread` or `CADisplayLink`, to the actual target.
 
 # How to use
 Note that the `RDRIntermediateTarget` is not retained! Check out the sample project to learn more.
@@ -37,6 +37,9 @@ self.timer = [NSTimer timerWithTimeInterval:1.0f
 The sample project exposes a single `UIViewController` with a timer, a switch, a label and a button. The timer is repeating and acts as a counter - on every tick, an integer is increased and subsequently displayed on the label. The switch allows you to toggle between a default implementation and an implementation where `RDRIntermediateTarget` is used. The latter is the case when the switch is on. Clicking on the button causes the application to reset the application window's `rootViewController`. If there's no retain cycle, you will notice a "DEALLOC" message in the console. If there is a retain cycle, nothing is logged.
 
 Inside `ViewController` you can change the `strong` keyword for the `timer` property to `weak` to see for yourself that this change does not make a difference. 
+
+# Requirements
+* ARC
 
 # License
 The code is licensed under the MIT license. See `LICENSE` for more details.
