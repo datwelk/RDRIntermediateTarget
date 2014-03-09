@@ -82,12 +82,7 @@
         return YES;
     }
     else {
-        if ([self.target respondsToSelector:aSelector]) {
-            return YES;
-        }
-        else {
-            return NO;
-        }
+        return [self.target respondsToSelector:aSelector];
     }
 }
 
