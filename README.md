@@ -32,7 +32,7 @@ self.timer = [NSTimer timerWithTimeInterval:1.0f
 ```
 
 # About the sample project
-The sample project exposes a single `UIViewController` with a timer, a switch, a label and a button. The timer is repeating and acts as a counter - on every tick, an integer is increased and subsequently displayed on the label. The switch allows you to toggle between a default implementation and an implementation where `RDRIntermediateTarget` is used. The latter is the case when the switch is on. Clicking on the button causes the application to reset the application window's `rootViewController`. If there's no retain cycle, you will notice a "DEALLOC" message in the console. If there is a retain cycle, nothing is logged.
+The sample project features a single `UIViewController` subclass called `ViewController` with a timer, a switch, a label and a button. The timer is repeating and acts as a counter - on every tick, an integer is increased and subsequently displayed on the label. The switch allows you to toggle between a default implementation and an implementation where `RDRIntermediateTarget` is used. The latter is the case when the switch is on. Clicking on the button causes the application to reset the application window's `rootViewController`, which is an instance of `ViewController`. If `rootViewController` is successfully deallocated, you will notice a "DEALLOC" message in the console. If there is a retain cycle, it will not deallocate and thus nothing is logged.
 
 Inside `ViewController` you can change the `strong` keyword for the `timer` property to `weak` to see for yourself that this change does not make a difference. 
 
