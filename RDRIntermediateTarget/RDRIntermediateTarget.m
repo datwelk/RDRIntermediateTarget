@@ -48,8 +48,7 @@
 
 - (id)initWithTarget:(id)target
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         _target = target;
     }
     
@@ -68,33 +67,42 @@
     
     SEL selector = [anInvocation selector];
     
-    if (![self.target respondsToSelector:selector]) {
-        [super forwardInvocation:anInvocation];
-    }
-    else {
+    // Target may be deallocated if self is strongly held.
+    // Silence messages sent to self in that case. Otherwise
+    // an unrecognized selector exception is triggered.
+    // https://stackoverflow.com/a/11531609/1127387
+    // First check if target is alive & responds. If not alive,
+    // silence the invocation. If alive and no response,
+    // forward to super.
+    
+    if (self.target && [self.target respondsToSelector:selector]) {
         [anInvocation invokeWithTarget:self.target];
+    } else if (!self.target) {
+        id nilPtr = nil;
+        [anInvocation setReturnValue:&nilPtr];
+    } else {
+        [super forwardInvocation:anInvocation];
     }
 }
 
 - (BOOL)respondsToSelector:(SEL)aSelector
 {
-    if ([super respondsToSelector:aSelector]) {
-        return YES;
-    }
-    else {
-        return [self.target respondsToSelector:aSelector];
-    }
+    return [self methodSignatureForSelector:aSelector] != nil;
 }
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector
-{    
-    NSMethodSignature *signature = [super methodSignatureForSelector:aSelector];
-    
-    if (!signature) {
-        signature = [self.target methodSignatureForSelector:aSelector];
+{
+    // Target may be deallocated if self is strongly held.
+    // Silence messages sent to self in that case. Otherwise
+    // an unrecognized selector exception is triggered.
+    // https://stackoverflow.com/a/11531609/1127387
+    if (self.target && [self.target respondsToSelector:aSelector]) {
+        return [self.target methodSignatureForSelector:aSelector];
+    } else if (!self.target) {
+        return [NSMethodSignature signatureWithObjCTypes:"@@:"];
+    } else {
+        return [super methodSignatureForSelector:aSelector];
     }
-    
-    return signature;
 }
 
 @end
